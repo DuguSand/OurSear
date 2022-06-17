@@ -15,18 +15,8 @@
     <div class="page-header">
         <a href="{% url 'searcher:index' %}"><h3>继续搜索</h3></a>
     </div>
-        {% with t=0 pt=0 %}
         {% for topic in topics %}
-            {% for txt in topic %}
-                {{ t|add 1 }}
-                {% if t in light[pt] %}
-                    <b>{{ text }}</b>
-                {% else %}
-                    {{ text }}
-                {% endif %}
-            {% endfor %}
             <a href="{% url 'searcher:topic' topic.id %}" target="_blank"><h4>{{ topic }}</h4></a>
-            {{ pt|add 1}}
         {% empty %}
             <h4>无</h4>
         {% endfor %}
