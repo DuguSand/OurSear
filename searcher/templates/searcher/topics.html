@@ -16,10 +16,15 @@
         <a href="{% url 'searcher:index' %}"><h3>继续搜索</h3></a>
     </div>
         {% for topic in topics %}
-            <a href="{% url 'searcher:topic' topic.id %}" target="_blank"><h4>{{ topic }}</h4></a>
+            {% for light in lights %}
+                {% if forloop.parentloop.counter == forloop.counter %}
+                    <a href="{% url 'searcher:topic' topic.id %}" target="_blank"><h4>{{ light|safe }}</h4></a>
+                {% endif %}
+            {% endfor %}
         {% empty %}
             <h4>无</h4>
         {% endfor %}
+
     </div>
 
 </body>
