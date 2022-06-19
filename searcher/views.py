@@ -19,23 +19,27 @@ def index(request):
         # 如果是POST，那就对数据进行处理
         form = SearchForm(request.POST)
         if form.is_valid(): #确定是否有效
-            show = []
-            light = []
             t = 0
-
+            tt = 0
             search = form.save(commit=False)
             length = len(search.text)
             topics = Topic.objects.all()
+            top = []
+            light = []
             for topic in topics:
-                t = 0
                 if search.text in topic.text:
-                    show.append(topic)
+                    t = 0
+                    top.append(topic)
+                    light.append(topic.text)
                     for txt in topic.text:
-                        if txt in search.text and topic.text[t:t+length+1] == search.text:
-                            light.append(list(range(t, t+length+1)))
-                        t += 1
+                        if txt in search.text and light[tt][t:t+length] == search.text:
+                            light[tt] = light[tt][:t]+"<b>"+light[tt][t:t+length]+"</b>"+light[tt][t+length:]
+                            t += length+7
+                        else:
+                            t += 1
+                    tt += 1
 
-            context = {'topics': show, 'search': search, 'light': light}
+            context = {'topics': top, 'search': search, 'lights': light}
 
             return render(request, 'searcher/topics.html', context)
 
